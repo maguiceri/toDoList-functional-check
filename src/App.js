@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react'
+import AddTasks from './components/AddTasks'
+import Tasks from './components/Tasks'
 
 function App() {
+  const [tasks, setTasks] = useState([])
+
+  function handleInputValue(value){
+    setTasks([...tasks, 
+      {
+      value,
+      isCompleted:false
+      }
+    ])
+  }
+
+  function handleCallBack(name){
+    const modifiedTasks = tasks.map((task)=>{
+      if(task.value == name) {
+        return{
+          value: task.value,
+          isCompleted: !task.isCompleted
+        }
+      }
+      return task;
+    }) 
+    setTasks(modifiedTasks)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <AddTasks handleCallBack={handleInputValue}/>
+    <Tasks handleCallBack={handleCallBack} tasks={tasks}/>
+    </>
   );
 }
 
